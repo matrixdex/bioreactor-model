@@ -1,4 +1,10 @@
-Cell composition functionality added.
+# Bioreactor-model Python package
+
+## Installation
+
+`pip install bioreactor-model`
+
+## Cell Composition functionality
 
 Use `calc.CellComposition` class to obtain biomass formula and biomass formula weight.
 
@@ -11,8 +17,14 @@ Use `calc.CellComposition` class to obtain biomass formula and biomass formula w
 
 These percentages must be between 0 and 100, not between 0 and 1. These are not absolute fractions but percentages.
 
-`CellComposition.biomass_formula` return dictionary with molecular formula of biomass. Dictionary keys are carbon, hydrogen, nitrogen and oxygen. Dictionary values are numbers corresponding to subscript value of each element in the biomass formula.
+### Estimating biomass formula
 
-`CellComposition.biomass_formula_weight` return molecular weight of biomass.
+Function `CellComposition.biomass_formula()` returns dictionary with molecular formula of biomass. Dictionary keys are carbon, hydrogen, nitrogen and oxygen. Dictionary values are numbers corresponding to subscript value of each element in the biomass formula.
+
+### Estimating biomass formula weight
+
+Function `CellComposition.biomass_formula_weight()` returns molecular weight of biomass.
+
+## Future development
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
