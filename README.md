@@ -108,7 +108,7 @@ Uses percentage values. Molar values must be normalized to percentages first
 
 This function sets gaseous inlet-outlet exchange percentage values. One of `inlet_N2` or `inlet_O2` may be omitted. Omitted variable is determined automatically by substracting from 100% the provided input value, as these values are percentages. Similarly, only one of `outlet_CO2, outlet_N2, outlet_O2` may be omitted and is determined autoamtically by substracting from 100% the 2 provided input values. This is used to determine respiratory quotient, providing an equation with b and d terms, and serving as 5th equation to solve linear system of biomass growth equations.
 
-After providing gaseous inlet and output observations, `BiomassEquation().solve_biomass_equation()` can be used to find biomass growth equation solution.
+After providing gaseous inlet and output values, `BiomassEquation().solve_biomass_equation()` can be used to find biomass growth equation solution.
 
 #### 2. `Function BiomassEquation.solve_biomass_equation(biomass_yield_gram = biomass_yield_gram, biomass_molar_weight=biomass_molar_weight)`:
 
@@ -154,6 +154,7 @@ biomass_equation_solution = {'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
