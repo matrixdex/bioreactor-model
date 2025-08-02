@@ -101,16 +101,60 @@ Glucose is default substrate for biomass growth. To change to hexane, use
 hexane_biomass_growth = BiomassEquation(biomass_composition, substrate='hexane')
 ```
 
-Function `CellComposition.biomass_formula()` returns dictionary with molecular formula of biomass. Dictionary keys are carbon, hydrogen, nitrogen and oxygen. Dictionary values are numbers corresponding to subscript value of each element in the biomass formula.
+Biomass growth equation has 4 equations and 5 variables (a,b,c,d,e). Additional equation is needed to determine solution with equation linear solver. This additional equation can provided in 4 ways. There are 4 ways to solve biomass growth equation in `bioreactor-model`:
 
-### Estimating biomass formula weight
+#### 1. `Function BiomassEquation.set_gas_io_values(inlet_N2, inlet_O2, outlet_CO2, outlet_N2, outlet_O2)`
+Uses percentage values. Molar values must be normalized to percentages first
 
-Function `CellComposition.biomass_formula_weight()` returns molecular weight of biomass.
+This function sets gaseous inlet-outlet exchange percentage values. One of `inlet_N2` or `inlet_O2` may be omitted. Omitted variable is determined automatically by substracting from 100% the provided input value, as these values are percentages. Similarly, only one of `outlet_CO2, outlet_N2, outlet_O2` may be omitted and is determined autoamtically by substracting from 100% the 2 provided input values. This is used to determine respiratory quotient, providing an equation with b and d terms, and serving as 5th equation to solve linear system of biomass growth equations.
+
+After providing gaseous inlet and output observations, `BiomassEquation().solve_biomass_equation()` can be used to find biomass growth equation solution.
+
+#### 2. `Function BiomassEquation.solve_biomass_equation(biomass_yield_gram = biomass_yield_gram, biomass_molar_weight=biomass_molar_weight)`:
+
+The function `solve_biomass_equation()` is provided 2 inputs:
+1. `biomass_yield_gram`: This is gram biomass / gram substrate yield (by mass). This value is experiemntally obtained and directly provided as input to biomass_growth solver.
+ 
+2. `biomass_molar_weight`: This value is obtained from `CellComposition().biomass_molar_weight`. `biomass_molar_weight` and `biomass_yield_gram` calculate molar yield of biomass per mole of substrate, equal to c in the linear biomass growth equations. This is used as the 5th equation in the linear biomass growth equations.
+
+#### 3. `Function BiomassEquation.solve_biomass_equation(biomass_yield_mol = biomass_yield_mol)`:   
+
+The function `solve_biomass_equation()` is provided `biomass_yield_mol` input. This is the molar yield of biomass per mole of substrate. It is equal to c in the linear biomass growth equations. No further calculation is needed because molar yield is provided directly as input.
+
+#### 4. `Function BiomassEquation.solve_biomass_equation(rq = respiratory_quotient)`:
+
+Respiratory quotient (RQ) is directly provided as input to the biomass growth equation solver. `RQ = d / b`. With RQ as input, this equation is used as 5th equation in linear biomass growth equation.
+
+### `BiomassEquation.solve_biomass_equation()`
+
+Use one of the above 4 methods to find a solution to biomass growth. Returns string form of biomass growth equation. Running this function also stores biomass growth solution in `BiomassEquation().biomass_growth_solution`.
+
+Example
+
+```bash
+BiomassEquation().solve_biomass_equation = "C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1.660)(N-0.194)(O-0.269) + 5.6CO2 + 5.784H2O"
+```
+
+### `BiomassEquation.biomass_equation_solution`
+
+Return dictionary with solution of biomass growth equation. It can only be run after `BiomassEquation.solve_biomass_equation()`. This dictionary stores 4 key-value pairs:
+
+1. `biomass_equation_solution['string']`: `string` of biomass growth equation with molar coefficients determined with biomass growth equation solver
+2. `biomass_equation_solution['molar_coeff']` `dict()` of molar coefficients in biomass growth equation. Stores molar coefficients for NH3, O2, biomass, CO2 and H2O. These are also solutions (a,b,c,d,e) of linear system of biomass growth equation respectively. See example for `biomass_equation_solution['molar_coeff']` schema.
+3. `biomass_composition`: `dict()` of biomass elemental compositions. Equivalent to `CellComposition().biomass_composition`.
+4. `rq`: `float` numerical value of respiratory quotient of biomass growth
+
+Example
+
+```bash
+biomass_equation_solution = {'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1.660)(N-0.194)(O-0.269) + 5.6CO2 + 5.784H2O', 'molar_coeff': {'NH3': 0.078, 'O2': 5.546, 'biomass': 0.4, 'CO2': 5.6, 'H2O': 5.784}, 'biomass_composition': {'C': 1, 'H': 1.66, 'N': 0.194, 'O': 0.269, 'formula': 'C(H-1.660)(N-0.194)(O-0.269)'}, 'rq': 1.01}
+```
 
 ## Future development
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
