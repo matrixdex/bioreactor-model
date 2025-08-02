@@ -55,7 +55,10 @@ values = {
 }
 ```
 
-Use `calc.CellComposition` class to obtain biomass formula and biomass formula weight.
+#### `CellComposition().biomass_composition` returns None if `dry_weights == False and molecular_formula == False`
+
+### `CellComposition().biomass_composition`
+Returns dictionary with 
 
 `CellComposition(C_dry_weight, H_dry_weight, N_dry_weight, O_dry_weight, ash_fraction)` object requires as input:
 1. `C_dry_weight`: dry weight percentage of carbon (between 0 and 100)
@@ -78,6 +81,7 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
