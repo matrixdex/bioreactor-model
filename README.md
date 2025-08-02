@@ -81,8 +81,25 @@ Example
 CellComposition().biomass_molar_weight = 22.48
 ```
 
+### `BiomassEquation(biomass_composition=dict(), substrate='glucose')`
+`BiomassEquation()` object solves biomass growth equations. This class must be initialized by biomass composition. This is obtained from `CellComposition().biomass_composition` or provided manually as a dictionary (see below).
 
-### Estimating biomass formula
+#### Biomass composition input schema
+
+```bash
+biomass_composition = {
+  'C':1,
+  'H':1.66,
+  'N':0.194
+  'O':0.269,
+}
+```
+
+### `substrate='glucose'`
+Glucose is default substrate for biomass growth. To change to hexane, use
+```bash
+hexane_biomass_growth = BiomassEquation(biomass_composition, substrate='hexane')
+```
 
 Function `CellComposition.biomass_formula()` returns dictionary with molecular formula of biomass. Dictionary keys are carbon, hydrogen, nitrogen and oxygen. Dictionary values are numbers corresponding to subscript value of each element in the biomass formula.
 
@@ -94,6 +111,7 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
