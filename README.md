@@ -153,10 +153,46 @@ biomass_equation_solution = {'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1
 'rq': 1.01}
 ```
 
+## Helpers
+
+### `class Constants()`
+Constants used in calculations. Atomic weights and molecular representations of substrates.
+
+#### `Constants().atomic_weights[key]`:
+Returns atomic weight of element key. Key is shortform symbol, like C for carbon.
+
+Example
+```bash
+Constants().atomic_weights['C'] = 12.001
+Constants().atomic_weights['H'] = 1.00784
+Constants().atomic_weights['N'] = 14.00674
+Constants().atomic_weights['O'] = 15.994
+```
+
+#### `Constants().substrates[key]`: 
+Return substrate `dict()`. Key is substrate name string, like hexane. Supported substrates: hexane and glucose.
+
+Example
+```bash
+Constants().substrates["hexane"] = {
+  "formula": "C6H14",
+  "C": 6,
+  "H": 14,
+  "N": 0,
+  "O": 0
+},
+```
+
+## Usage
+
+See [`tests/test.py`](https://github.com/matrixdex/bioreactor-model/blob/main/tests/test.py) in repository for usage.
+
+
 ## Future development
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
