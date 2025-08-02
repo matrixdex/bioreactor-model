@@ -55,19 +55,32 @@ values = {
 }
 ```
 
-#### `CellComposition().biomass_composition` returns None if `dry_weights == False and molecular_formula == False`
+#### `CellComposition()` returns `None` if `dry_weights == False and molecular_formula == False`
 
 ### `CellComposition().biomass_composition`
-Returns dictionary with 
+Returns dictionary with biomass composition. `CellComposition().biomass_composition['formula']` is biomass molecular formula string.
 
-`CellComposition(C_dry_weight, H_dry_weight, N_dry_weight, O_dry_weight, ash_fraction)` object requires as input:
-1. `C_dry_weight`: dry weight percentage of carbon (between 0 and 100)
-2. `H_dry_weight`: dry weight percentage of hydrogen (between 0 and 100)
-3. `N_dry_weight`: dry weight percentage of nitrogen (between 0 and 100)
-4. `O_dry_weight`: dry weight percentage of oxygen (between 0 and 100)
-5. `ash_fraction`: dry weight percentage of ash (between 0 and 100)
+Example
 
-These percentages must be between 0 and 100, not between 0 and 1. These are not absolute fractions but percentages.
+```bash
+CellComposition().biomass_composition = {
+  'C':1,
+  'H':1.66,
+  'N':0.194
+  'O':0.269,
+  'formula': 'C(H-1.66)(N-0.194)(O-0.269)'
+}
+```
+
+### `CellComposition().biomass_molar_weight`
+Returns numerical molar weight of biomass
+
+Example
+
+```bash
+CellComposition().biomass_molar_weight = 22.48
+```
+
 
 ### Estimating biomass formula
 
@@ -81,6 +94,7 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
