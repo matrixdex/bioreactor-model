@@ -1,10 +1,18 @@
-# Bioreactor-model Python package
+# Bioreactor-model
+Bioreactor-model is a Python package for bioreactor and biomass growth calculations
 
 ## Installation
 
-`pip install bioreactor-model`
+```bash
+pip install bioreactor-model
+```
 
-## Cell Composition functionality
+## Classes
+`calc.CellComposition()` calculates biomass formula and biomass formula weight
+
+`calc.BiomassComposition()` solves biomass equation
+
+## `CellComposition`
 
 Use `calc.CellComposition` class to obtain biomass formula and biomass formula weight.
 
@@ -26,5 +34,6 @@ Function `CellComposition.biomass_formula()` returns dictionary with molecular f
 Function `CellComposition.biomass_formula_weight()` returns molecular weight of biomass.
 
 ## Future development
+
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
