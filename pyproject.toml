@@ -4,11 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bioreactor_model"
-version = "0.0.2"
+version = "0.0.5"
+dependencies = [
+  "numpy"
+]
 authors = [
   { name="Noorul Ali", email="manonthemoon13131@gmail.com" },
 ]
-description = "Bioreactor-model is a Python package for bioreactor calculations like scale up, biomass growth stoichiometry, fed-batch yields and gas transfer."
+description = "Bioreactor-model is a Python package for bioreactor and biomass growth calculations"
 readme = "README.md"
 requires-python = ">=3.13"
 classifiers = [
@@ -20,5 +23,7 @@ license = "CC0-1.0"
 license-files = ["LICENSE*"]
 
 [project.urls]
-Homepage = "https://github.com/matrixdex/bioreactor-model"
+Homepage = "https://asbldex.github.io"
+Documentation = "https://github.com/matrixdex/bioreactor-model/blob/main/README.md"
 Issues = "https://github.com/matrixdex/bioreactor-model/issues"
+Repository = "https://github.com/matrixdex/bioreactor-model"
