@@ -12,7 +12,7 @@ pip install bioreactor-model
 
 `calc.BiomassComposition()` solves biomass equation
 
-## `CellComposition`
+### `CellComposition`
 
 Use `calc.CellComposition` class to obtain biomass formula and biomass formula weight.
 
@@ -37,3 +37,4 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
