@@ -183,6 +183,15 @@ Constants().substrates["hexane"] = {
 },
 ```
 
+#### `Constants().get_molar_weight(compound)`:
+
+Returns molecular weight of compound. Compound is `dict()` with keys for carbon, hydrogen, nitrogen and oxygen subscripts (atoms) in molecular formula. `compound` is equivalent to `CellComposition().biomass_composition`. `CellComposition().biomass_composition` and `BiomassEquation().substrate`can be used as input to `Constants().get_molar_weight(compound)`.
+
+Example
+
+```bash
+Constants().get_molar_weight({"C":6, "H":14, "N" 0, "O":0}) = 86.176
+```
 ## Usage
 
 See [`tests/test.py`](https://github.com/matrixdex/bioreactor-model/blob/main/tests/test.py) in repository for usage.
@@ -192,6 +201,7 @@ See [`tests/test.py`](https://github.com/matrixdex/bioreactor-model/blob/main/te
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
