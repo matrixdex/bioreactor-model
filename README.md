@@ -15,11 +15,11 @@ pip install bioreactor-model
 ### `CellComposition(values=dict(), dry_weights=False, molecular_formula=False)`
 `CellComposition()` contains biomass elemental composition and molar weight. `CellComposition()` requires initialization in one of 2 ways. There are 2 ways to provide input to initialize biomass composition:
 
-1. Use `dry_weights = True`: Store in values dictionary the dry weight percentages of carbon, hydrogen, nitrogen and oxygen, and ash fraction in biomass (obtained experimentally). See below for values dictionary.  
-2. Use `molecular_formula = True`: Store in values dictionary the molecular formula of biomass as shown below.
+1. Use `dry_weights = True`: Store in values dictionary the dry weight percentages of carbon, hydrogen, nitrogen and oxygen, and ash fraction in biomass (obtained experimentally). See `values dict()` and `if dry_weights == True` below.  
+2. Use `molecular_formula = True`: Store in values dictionary the molecular formula of biomass as shown below. See `values dict()` and `if molecular_formula == True` below. 
 
 ### `Values dict()`
-`Values` is a required input in `CellComposition()`. `molecular_formula` or `dry_weights` variable determines how to use values dictionary. Values stores 5 key-value pairs for carbon, hydrogen, oxygen, nitrogen and ash_fraction.
+`Values` is a required input in `CellComposition()`. `molecular_formula` or `dry_weights` variable determines how to `values dict()` is used. It stores 5 key-value pairs for carbon, hydrogen, oxygen, nitrogen and ash_fraction.
 
 `if dry_weights == True`, values stores dry-weight percentages between 1 and 100.
 1. `values['C']`: dry weight percentage of carbon (between 0 and 100)
@@ -78,6 +78,7 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
