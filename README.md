@@ -147,13 +147,17 @@ Return dictionary with solution of biomass growth equation. It can only be run a
 Example
 
 ```bash
-biomass_equation_solution = {'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1.660)(N-0.194)(O-0.269) + 5.6CO2 + 5.784H2O', 'molar_coeff': {'NH3': 0.078, 'O2': 5.546, 'biomass': 0.4, 'CO2': 5.6, 'H2O': 5.784}, 'biomass_composition': {'C': 1, 'H': 1.66, 'N': 0.194, 'O': 0.269, 'formula': 'C(H-1.660)(N-0.194)(O-0.269)'}, 'rq': 1.01}
+biomass_equation_solution = {'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1.660)(N-0.194)(O-0.269) + 5.6CO2 + 5.784H2O',
+'molar_coeff': {'NH3': 0.078, 'O2': 5.546, 'biomass': 0.4, 'CO2': 5.6, 'H2O': 5.784},
+'biomass_composition': {'C': 1, 'H': 1.66, 'N': 0.194, 'O': 0.269, 'formula': 'C(H-1.660)(N-0.194)(O-0.269)'},
+'rq': 1.01}
 ```
 
 ## Future development
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
