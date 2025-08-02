@@ -40,9 +40,9 @@ values = {
 
 `if molecular_formula == True`, values stores molecular formula of biomass.
 1. `values['C']`: default 1 mol carbon
-2. `values['H']`: molecular subscript of hydrogen in biomass formula (mol hydrogen in biomass normalized to 1 mol carbon)
-3. `values['N']`: molecular subscript of nitrogen in biomass formula (mol nitrogen in biomass normalized to 1 mol carbon)
-4. `values['O']`: molecular subscript of oxygen in biomass formula (mol hydrogen in oxygen normalized to 1 mol carbon)
+2. `values['H']`: hydrogren subscript in biomass formula (mol hydrogen normalized to 1 mol carbon)
+3. `values['N']`: nitrogen subscript in biomass formula (mol nitrogen normalized to 1 mol carbon)
+4. `values['O']`: oxygen subscript in biomass formula (mol hydrogen normalized to 1 mol carbon)
 5. `values['ash_fraction']`: dry weight percentage of ash (between 0 and 100)
 
 ```bash
@@ -78,6 +78,7 @@ Function `CellComposition.biomass_formula_weight()` returns molecular weight of 
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
