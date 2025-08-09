@@ -10,7 +10,7 @@ pip install bioreactor-model
 ## Classes
 `calc.CellComposition()` calculates biomass formula and biomass formula weight
 
-`calc.BiomassComposition()` solves biomass equation
+`calc.BiomassEquation()` solves biomass equation
 
 ### `CellComposition(values=dict(), dry_weights=False, molecular_formula=False)`
 `CellComposition()` contains biomass elemental composition and molar weight. `CellComposition()` requires initialization in one of 2 ways. There are 2 ways to provide input to initialize biomass composition:
@@ -201,6 +201,7 @@ See [`tests/test.py`](https://github.com/matrixdex/bioreactor-model/blob/main/te
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
