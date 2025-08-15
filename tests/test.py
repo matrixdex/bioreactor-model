@@ -3,14 +3,14 @@ from bioreactor_model import calc
 expt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)
 assert expt!=None
 biomass = expt.biomass_composition
-print(biomass)
+
 assert biomass['C'] == 1
 assert biomass['H'] == 1.052
 assert biomass['N'] == 0.182
 assert biomass['O'] == 0.495
-print(biomass)
+
 assert expt.biomass_molar_weight == 25.545
-print(calc.Constants().substrates['glucose'])
+
 
 be = calc.BiomassEquation(biomass)
 be.set_gas_io_values(79,21,10,83,7)
