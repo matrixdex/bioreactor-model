@@ -19,13 +19,14 @@ pip install bioreactor-model
 
 See [tutorials](https://matrixdex.github.io/bioreactor-model/tutorials.html) in documentation.
 
-See [tests/test.py](https://github.com/matrixdex/bioreactor-model/blob/main/tests/test.py) has tests.
+See [tests/test.py](https://github.com/matrixdex/bioreactor-model/blob/main/tests/test.py) for usage.
 
 
 ## Future development
 
 
 Scale up parameters, fed-batch yield estimation, yield coefficient calculation, gas transfer estimation, oxygen transport and uptake rates will be added soon.
+
 
 
 
