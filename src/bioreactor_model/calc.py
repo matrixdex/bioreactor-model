@@ -9,14 +9,14 @@ class Constants:
         }
         self.substrates = {
             "hexane": {
-                "formula": "C6H14",
+                "formula": u'C\u2086H\u2081\u2084',
                 "C": 6,
                 "H": 14,
                 "N": 0,
                 "O": 0
             },
             "glucose": {
-                "formula": "C6H12O6",
+                "formula": u'C\u2086H\u2081\u2082O\u2086',
                 "C": 6,
                 "H": 12,
                 "N": 0,
