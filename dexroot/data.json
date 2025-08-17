@@ -1,0 +1,173 @@
+[
+    {
+        "title": "Getting Started",
+        "body": [
+            "Bioreactor-model is a Python package for bioreactor and biomass growth calculations",
+            "1. Install bioreactor-model by typing in terminal:",
+            "<pre><code>pip install bioreactor-model</code></pre>",
+            "2. Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction:",
+            "<pre><code>from bioreactor_model import calc\nexpt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)\nprint(expt.biomass_composition)\t\t# biomass composition\nprint(expt.biomass_molar_weight)\t# molecular weight = 25.545</code></pre>",
+            "3. Compute biomass equation with above biomass composition and gaseous inlet-outlet exchange values:",
+
+            "<pre><code>be = calc.BiomassEquation(expt.biomass_composition)\nbe.set_gas_io_values(79,21,10,83,7)\nbe.solve_biomass_equation()\nprint(be.biomass_equation_solution['string'])\t\t\t# biomass equation string \nprint(be.biomass_equation_solution['molar_coeff'])\t\t# molar coefficients of biomass equation\nprint(be.biomass_equation_solution['biomass_composition'])\t# biomass composition\nprint(be.biomass_equation_solution['rq'])\t\t\t# respiratory quotient = 0.664</pre></code>",
+            "4: See <a href='tutorials.html'>tutorials</a>"
+            
+        ]
+    },
+    {
+        "title": "Installation",
+        "body": [
+            "Bioreactor-model is a Python library available on PyPI",
+            "Install <a href='https://pypi.org/project/bioreactor-model/'>bioreactor-model Python library</a> in terminal with",
+            "<pre><code>pip install bioreactor-model</code></pre>",
+            "Latest packaged versions are available in bioreactor-model GitHub repository <a href='https://github.com/matrixdex/bioreactor-model/tree/main/dist'>here</a>. Install with <code>pip</code>.",
+            "Latest release: <code>v0.0.6</code>",
+            "See <a href='tutorials.html'>tutorials</a>"
+        ]
+    },
+    {
+        "title": "Usage",
+        "body": [
+            "Coming soon. Meanwhile, see:",
+            "1. <a href='gettingstarted.html'>Getting Started</a>",
+            "2. <a href='tutorials.html'>Tutorials</a>",
+            "3. <a href='apireference.html'>API Reference</a>"
+        ]
+    },
+    {
+        "title": "Tutorials",
+        "body": [
+            "1. <a href='#tut1'>Compare yeast growth under glucose and hexane substrates</a><br>2. <a href='#tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a><br>3. <a href='#tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a>",
+
+            "1. <a href='#tut1' id='tut1'>Compare yeast growth under glucose and hexane substrates</a>",
+            "<pre><code>from bioreactor_model import calc\nyeast = calc.CellComposition(values={'C':1,'H':1.66,'N':0.194,'O':0.269,'ash_fraction':8}, molecular_formula=True)\nysol_hex=calc.BiomassEquation(yeast.biomass_composition,substrate='hexane')\nysol_glu=calc.BiomassEquation(yeast.biomass_composition,substrate='glucose')\nysol_hex.solve_biomass_equation(biomass_yield_gram=1.4, biomass_molar_weight=yeast.biomass_molar_weight) # yield by gram\nysol_glu.solve_biomass_equation(biomass_yield_mol=0.4)  # molar yield\nyeast_hexane_sol = ysol_hex.biomass_equation_solution\nyeast_glucose_sol = ysol_glu.biomass_equation_solution\nprint('Respiratory quotient with glucose substrate: ',yeast_glucose_sol['rq'])\nprint('Respiratory quotient with hexane substrate: ',yeast_hexane_sol['rq'])</code></pre>",
+
+            "<pre><code>Out:\nRespiratory quotient with glucose substrate: 1.01\nRespiratory quotient under hexane substrate: 0.187</code></pre>",
+            "Respiratory growth of yeast in glucose substrate is close to 1. Respiratory growth of yeast in hexane substrate is much less than 1. This is because glucose needs less dioxygen (O2) for respiration because it contains oxygen (C6H12O6). Respiratory quotient is defined as the ratio between moles of carbon dioxide produced per mole of dioxygen (O2). Since hexane (C6H14) lacks oxygen (O), yeast requires more dioxygen (O2) for respiration when using hexane as substrate, hence respiratory quotient is lower in that case.",
+
+            "<br>2. <a href='#tut2' id='tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a>",
+            "<pre><code>from bioreactor_model import calc\nexpt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)\nbiomass = expt.biomass_composition\nbe = calc.BiomassEquation(biomass)\nbe.set_gas_io_values(inlet_N2=79,inlet_O2=21,outlet_CO2=10,outlet_N2=83,outlet_O2=7)\nprint(be.rq_from_gas_io())</code></pre>",
+
+            "<pre><code>Out:\n0.664</code></pre>",
+            "<br>3. <a href='#tut3' id='tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a>",
+            
+            "<pre><code>from bioreactor_model import calc\nexpt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)\nprint(expt.biomass_molar_weight)\nprint(expt.biomass_composition['formula'])</code></pre>",
+            "<pre><code>Out:\n25.545\nC(H-1.052)(N-0.182)(O-0.495)</code></pre>"
+
+        ]
+    },
+    {
+        "title": "API Reference",
+        "body": [
+            "<ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#cellcomposition'>class CellComposition()</a></li><ul style='list-style-type: none;'><li><a href='#ccbiomasscomp'>CellComposition().biomass_composition</a></li><li><a href='#ccbiomassmw'>CellComposition().biomass_molar_weight</a></li></ul></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#biomassequation'>class BiomassEquation()</a></li><ul style='list-style-type: none;'><li><a href='#besetgasio'>BiomassEquation().set_gas_io_values()</a></li><li><a href='#besolvebe'>BiomassEquation().solve_biomass_equation()</a></li><li><a href='#bebes'>BiomassEquation().biomass_equation_solution</a></li><li><a href='#besub'>BiomassEquation().substrate</a></li></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#constants'>class Constants()</a></li><ul style='list-style-type: none;'><li><a href='#constantsaw'>Constants().atomic_weights[key]</a></li><li><a href='#constantssub'>Constants().substrates[key]</a></li><li><a href='#constantgmw'>Constants().get_molar_weight(compound)</a></li></ul></ul>",
+
+            "<a href='#cellcomposition' id='cellcomposition'>class CellComposition()</a>",
+            "<pre><code>calc.CellComposition(values=values, dry_weights=False, molecular_formula=False)</code></pre>",
+
+            "CellComposition() contains biomass elemental composition and molar weight. CellComposition() requires values dictionary for initialization. CellComposition() returns None if both dry_weights and molecular_formula are False. There are 2 ways to initialize CellComposition():",
+            "1. dry_weights = True: Store dry weight percentages of carbon, hydrogen, nitrogen and oxygen in values dictionary and ash fraction in biomass (obtained experimentally). See <a href='#valuesdict1'>below</a> for example.",
+            "2. molecular_formula = True: Store biomass molecular formula of biomass in values dictionary as shown <a href='#valuesdict2'>below</a>.",
+            "<a href='#valuesdict' id='valuesdict'>Values dictionary</a>",
+            "Values is a required parameter in CellComposition(). molecular_formula or dry_weights variable determines how to values dictionary is used. Values dictionary stores 5 key-value pairs for carbon, hydrogen, oxygen, nitrogen and ash_fraction.",
+            "<a href='#valuesdict1' id='valuesdict1'>dry_weights = True</a>:",
+            "Values dictionary stores dry-weight percentages between 0 and 100 and ash fraction",
+            "1. values['C']: dry weight percentage of carbon (between 0 and 100)",
+            "2. values['H']: dry weight percentage of hydrogen (between 0 and 100)",
+            "3. values['N']: dry weight percentage of nitrogen (between 0 and 100)",
+            "4. values['O']: dry weight percentage of oxygen (between 0 and 100)",
+            "5. values['ash_fraction']: dry weight percentage of ash (between 1 and 100)",
+            "Example:<br><pre><code>values = { 'C':47,'H':4.15,'N':10,'O':31,'ash_fraction': 7.85}</code></pre>",
+
+            "<a href='#valuesdict2' id='valuesdict2'>molecular_formula = True</a>:",
+            "Values dictionary stores molecular formula of biomass",
+            "1. values['C']: default 1 (biomass normalized to 1 mol carbon)",
+            "2. values['H']: hydrogren subscript in biomass formula (mol hydrogen normalized to 1 mol carbon)",
+            "3. values['N']: nitrogen subscript in biomass formula (mol nitrogen normalized to 1 mol carbon)",
+            "4. values['O']: oxygen subscript in biomass formula (mol oxygen normalized to 1 mol carbon)",
+            "5. values['ash_fraction']: dry weight percentage of ash (between 1 and 100)",
+            "Example: Values dictionary for CH<sub>1.66</sub>N<sub>0.194</sub>O<sub>0.269</sub><br><pre><code>values = { 'C':1,'H':1.66,'N':0.194,'O':0.269,'ash_fraction': 7.85}</code></pre>",
+
+            "<a href='#ccbiomasscomp' id='ccbiomasscomp'>CellComposition().biomass_composition</a>",
+            "Returns dictionary with biomass composition and biomass molecular formula string. Example:",
+
+            "<pre><code>print(CellComposition().biomass_composition)</code></pre><pre><code>Out:\n{'C':1,'H':1.66,'N':0.194,'O':0.269,\n'formula': 'C(H-1.66)(N-0.194)(O-0.269)'}</code></pre>",
+
+            "<a href='#ccbiomassmw' id='ccbiomassmw'>CellComposition().biomass_molar_weight</a>",
+            "Returns numerical molar weight of biomass. Example:",
+            "<pre><code>print(CellComposition().biomass_molar_weight)</code></pre><pre><code>Out:\n22.48</code></pre>",
+
+            "<a href='#biomassequation' id='biomassequation'>BiomassEquation()</a>",
+            "<pre><code>calc.BiomassEquation(biomass_composition=biomass_composition, substrate='glucose')</code></pre>",
+            "BiomassEquation() object solves biomass growth equations. This class must be initialized with biomass composition. <a href='#ccbiomasscomp'>CellComposition().biomass_composition</a> or dictionary with similar schema are valid inputs. Biomass composition dictionary schema:",
+            "<pre><code>biomass_composition = {'C':1,'H':1.66,'N':0.194,'O':0.269}</code></pre>",
+            "Biomass growth equation has 4 equations and 5 variables (a,b,c,d,e). An additional equation is needed to solve the system of biomass equations with linear equation solver. This is provided in 4 ways. See <a href='#besolvebe'>BiomassEquation().solve_biomass_equation()</a> for details.",
+
+            "<a href='#besetgasio' id='besetgasio'>BiomassEquation().set_gas_io_values()</a>",
+            "<pre><code>BiomassEquation.set_gas_io_values(inlet_N2=None,inlet_O2=None,outlet_CO2=None,outlet_N2=None,outlet_O2=None)</code></pre>",
+            "This function sets gaseous inlet-outlet exchange values in percent (0 to 100) to determine respiratory quotient. It uses percentage values. Molar values must be normalized to percentages first.",
+
+            "One of inlet_N2 or inlet_O2 may be omitted. The omitted variable is determined by subtracting from 100% the provided input value, as these values are percentages. Similarly, only one of outlet_CO2, outlet_N2, outlet_O2 may be omitted. This is also determined by subtracting from 100% the 2 provided input values.",
+            
+            "<a href='#besolvebe' id='besolvebe'>BiomassEquation().solve_biomass_equation()</a>",
+            "<pre><code>BiomassEquation().solve_biomass_equation(rq=None,biomass_yield_mol=None,biomass_yield_gram=None,biomass_molar_weight=None)</code></pre>",
+            "Returns string form of biomass growth equation and stores biomass growth solution in <a href='#bebes'>biomass_equation_solution</a>. Solves biomass growth equation with linear equation solver. Biomass growth equation has 4 equations and 5 variables (a,b,c,d,e). An additional equation is needed to solve the system of biomass equations with linear equation solver. This is provided in one of 4 ways:",
+            "1. Respiratory quotient with <a href='#besolvebe' id='besolvebe'>BiomassEquation().solve_biomass_equation()</a>:<br>Provide gaseous inlet-outlet values before running solve_biomass_equation(). Respiratory quotient (RQ) is calculated and (RQ=d/b) is used as the 5th equation to solve linear system of biomass equation. Example:",
+            "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.set_gas_io_values(79,21,10,83,7)\nbe.solve_biomass_equation()\nsolution = be.biomass_equation_solution</pre></code>",
+            "2. Use biomass yield (gram):<br>solve_biomass_equation() is provided 2 inputs:<ol><li>biomass_yield_gram: This is gram biomass / gram substrate yield (by mass). This value is experimentally obtained and provided as input.</li><li>biomass_molar_weight: Use <a href='#ccbiomassmw'>CellComposition().biomass_molar_weight</a>.</li></ol>",
+            "Biomass molar weight and biomass yield by gram are used to calculate molar yield (MY) of biomass per mole of substrate. (MY=c) is used as the 5th equation to solve linear system of biomass equation. Example:",
+            "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.solve_biomass_equation(biomass_yield_gram=1.4, biomass_molar_weight=biomass_molar_weight)\nsolution = be.biomass_equation_solution</pre></code>",
+            "3. Use biomass molar yield:<br>solve_biomass_equation() is provided biomass molar yield (biomass_yield_mol) as input. This is molar yield (MY) of biomass per mole of substrate. (MY=c) is used as the 5th equation to solve linear system of biomass equation. Example:",
+            "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.solve_biomass_equation(biomass_yield_mol=0.4)\nsolution = be.biomass_equation_solution</pre></code>",
+            "4. Manually provide respiratory quotient:<br>Respiratory quotient (RQ) is provided as input to solve_biomass_equation. (RQ=d/b) is used as the 5th equation to solve linear system of biomass equation. Example:",
+            "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.solve_biomass_equation(rq=0.67)\nsolution = be.biomass_equation_solution</pre></code>",
+            
+            "<a href='#bebes' id='bebes'>BiomassEquation().biomass_equation_solution</a>",
+            "Returns dictionary with solution of biomass growth equation. Only has value after <a href='#besolvebe'>solve_biomass_equation()</a> is run. Dictionary object has 4 keys:<ol><li>string: String of biomass growth equation with molar coefficients determined with biomass growth equation solver</li><li>molar_coeff: Dictionary of molar coefficients in biomass growth equation. Stores molar coefficients for NH3, O2, biomass, CO2 and H2O. These are also solutions (a,b,c,d,e) of linear system of biomass growth equation respectively.</li><li>biomass_composition: Dictionary of biomass elemental compositions. Equivalent to <a href='#ccbiomasscomp'>CellComposition().biomass_composition</a>.</li><li>rq: Floating point value of respiratory quotient of biomass growth</li></ol>",
+            "Example:",
+            "<pre><code>{\n\t'string': 'C6H12O6 + 0.078NH3 + 5.546O2 -> 0.4C(H-1.660)(N-0.194)(O-0.269) + 5.6CO2 + 5.784H2O',\n\t'molar_coeff': {'NH3': 0.078, 'O2': 5.546, 'biomass': 0.4, 'CO2': 5.6, 'H2O': 5.784},\n\t'biomass_composition': {'C': 1, 'H': 1.66, 'N': 0.194, 'O': 0.269, 'formula': 'C(H-1.660)(N-0.194)(O-0.269)'},\n\t'rq': 1.01\n}</code></pre>",
+
+            "<a href='#besub' id='besub'>BiomassEquation().substrate</a>",
+            "<pre><code>calc.BiomassEquation().substrate</code></pre>",
+            "Returns string of substrate name provided as input to biomass growth equation object. Glucose is default substrate for biomass growth. To change substrate to hexane:",
+            "<pre><code>hexane_biomass_growth = calc.BiomassEquation(biomass_composition, substrate='hexane')</code></pre>",
+
+            "<a href='#constants' id='constants'>class Constants()</a>",
+            "Helper class of constants used in calculations. Has atomic weights and molecular representation of substrates.",
+            
+            "<a href='#constantsaw' id='constantsaw'>Constants().atomic_weights[key]</a>",
+            "Returns atomic weight of element key. Key is shortform symbol, like C for carbon. Example:",
+            "<pre><code>print(Constants().atomic_weights['C'])\nprint(Constants().atomic_weights['H'])\nprint(Constants().atomic_weights['N'])\nprint(Constants().atomic_weights['O'])</code></pre>",
+            "<pre><code>Out:\n12.001\n1.00784\n14.00674\n15.994</code></pre>",
+            
+            "<a href='#constantssub' id='constantssub'>Constants().substrates[key]</a>",
+            "Return substrate dictionary. Key is substrate name string, like hexane. Supported substrates: hexane and glucose.",
+            "<pre><code>print(Constants().substrates['hexane'])</code></pre>",
+            "<pre><code>Out:\n{ 'formula': 'C6H14','C':6,'H':14,'N':0,'O':0}</code></pre>",
+
+            "<a href='#constantgmw' id='constantgmw'>Constants().get_molar_weight(compound)</a>",
+            "Returns molecular weight of compound. Compound is dictionary with keys for carbon, hydrogen, nitrogen and oxygen subscript values in molecular formula. Compound is equivalent to CellComposition().biomass_composition. <a href='#ccbiomasscomp'>CellComposition().biomass_composition</a> and BiomassEquation().substrate can be used as input to Constants().get_molar_weight(compound).",
+            "<pre><code>print(Constants().get_molar_weight({'C':6,'H':14,'N:0,'O':0}))</code></pre>",
+            "<pre><code>Out:\n86.176</code></pre>"
+        ]
+    },
+    {
+        "title": "Issues and Future Development",
+        "body": [
+            "Open issues in <a href='https://github.com/matrixdex/bioreactor-model/issues'>GitHub repository</a>",
+            "Future development:",
+            "1. Bioreactor scale up parameter estimation",
+            "2. Fed-batch bioreactor yield estimation",
+            "3. Yield coefficient calculation",
+            "4. Gas transfer estimation",
+            "5. Oxygen transport and uptake rates",
+            "6. Graph bioreactor run"
+
+        ]
+    },
+    {
+        "title": "ASBL",
+        "body": [
+            "<a href='https://asbldex.github.io'></a>"
+        ]
+    }
+]

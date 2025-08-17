@@ -1,0 +1,37 @@
+<html lang='en'>
+                        <head>
+                            <meta charset='UTF-8'>
+                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                            <link rel='shortcut icon' type='image/x-icon' href='assets/favicon.ico'> <link rel='stylesheet' href='styles.css'><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css'><script src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js'></script><script>hljs.highlightAll();</script>                            <title>Tutorials - Bioreactor-model Docs</title>
+                        </head>
+                        <body>
+                        <br>
+                        <h1>TUTORIALS</h1>
+                        <br>
+                        <p>1. <a href='#tut1'>Compare yeast growth under glucose and hexane substrates</a><br>2. <a href='#tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a><br>3. <a href='#tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a></p><p>1. <a href='#tut1' id='tut1'>Compare yeast growth under glucose and hexane substrates</a></p><p><pre><code>from bioreactor_model import calc
+yeast = calc.CellComposition(values={'C':1,'H':1.66,'N':0.194,'O':0.269,'ash_fraction':8}, molecular_formula=True)
+ysol_hex=calc.BiomassEquation(yeast.biomass_composition,substrate='hexane')
+ysol_glu=calc.BiomassEquation(yeast.biomass_composition,substrate='glucose')
+ysol_hex.solve_biomass_equation(biomass_yield_gram=1.4, biomass_molar_weight=yeast.biomass_molar_weight) # yield by gram
+ysol_glu.solve_biomass_equation(biomass_yield_mol=0.4)  # molar yield
+yeast_hexane_sol = ysol_hex.biomass_equation_solution
+yeast_glucose_sol = ysol_glu.biomass_equation_solution
+print('Respiratory quotient with glucose substrate: ',yeast_glucose_sol['rq'])
+print('Respiratory quotient with hexane substrate: ',yeast_hexane_sol['rq'])</code></pre></p><p><pre><code>Out:
+Respiratory quotient with glucose substrate: 1.01
+Respiratory quotient under hexane substrate: 0.187</code></pre></p><p>Respiratory growth of yeast in glucose substrate is close to 1. Respiratory growth of yeast in hexane substrate is much less than 1. This is because glucose needs less dioxygen (O2) for respiration because it contains oxygen (C6H12O6). Respiratory quotient is defined as the ratio between moles of carbon dioxide produced per mole of dioxygen (O2). Since hexane (C6H14) lacks oxygen (O), yeast requires more dioxygen (O2) for respiration when using hexane as substrate, hence respiratory quotient is lower in that case.</p><p><br>2. <a href='#tut2' id='tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a></p><p><pre><code>from bioreactor_model import calc
+expt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)
+biomass = expt.biomass_composition
+be = calc.BiomassEquation(biomass)
+be.set_gas_io_values(inlet_N2=79,inlet_O2=21,outlet_CO2=10,outlet_N2=83,outlet_O2=7)
+print(be.rq_from_gas_io())</code></pre></p><p><pre><code>Out:
+0.664</code></pre></p><p><br>3. <a href='#tut3' id='tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a></p><p><pre><code>from bioreactor_model import calc
+expt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)
+print(expt.biomass_molar_weight)
+print(expt.biomass_composition['formula'])</code></pre></p><p><pre><code>Out:
+25.545
+C(H-1.052)(N-0.182)(O-0.495)</code></pre></p>
+                        <br><br><br><br><br><br><br>
+                        <h3><a href='index.html'>BACK TO DOCS</a></h3>
+                    </body>
+                    </html>
