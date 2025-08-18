@@ -176,6 +176,3 @@ class BiomassEquation:
             "rq": round(float(self.biomass_equation_coeff['d']/self.biomass_equation_coeff['b']),3)
         }
         return self.biomass_equation_solution['string']
-        
-
-        
