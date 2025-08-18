@@ -21,7 +21,7 @@
             "Install <a href='https://pypi.org/project/bioreactor-model/'>bioreactor-model Python library</a> in terminal with",
             "<pre><code>pip install bioreactor-model</code></pre>",
             "Latest packaged versions are available in bioreactor-model GitHub repository <a href='https://github.com/matrixdex/bioreactor-model/tree/main/dist'>here</a>. Install with <code>pip</code>.",
-            "Latest release: <code>v0.0.6</code>",
+            "Latest release: <code>v0.0.8</code>",
             "See <a href='tutorials.html'>tutorials</a>"
         ]
     },
@@ -37,29 +37,35 @@
     {
         "title": "Tutorials",
         "body": [
-            "1. <a href='#tut1'>Compare yeast growth under glucose and hexane substrates</a><br>2. <a href='#tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a><br>3. <a href='#tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a>",
+            "1. <a href='#tut1'>Yeast growth comparison under glucose and hexane substrates</a><br>2. <a href='#tut2'>Respiratory quotient from gaseous inlet-outlet exchange values</a><br>3. <a href='#tut3'>Biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a><br>4. <a href='#tut4'>Time to achieve given titer under exponential biomass growth (doubling)</a>",
 
-            "1. <a href='#tut1' id='tut1'>Compare yeast growth under glucose and hexane substrates</a>",
+            "1. <a href='#tut1' id='tut1'>Yeast growth comparison under glucose and hexane substrates</a>",
             "<pre><code>from bioreactor_model import calc\nyeast = calc.CellComposition(values={'C':1,'H':1.66,'N':0.194,'O':0.269,'ash_fraction':8}, molecular_formula=True)\nysol_hex=calc.BiomassEquation(yeast.biomass_composition,substrate='hexane')\nysol_glu=calc.BiomassEquation(yeast.biomass_composition,substrate='glucose')\nysol_hex.solve_biomass_equation(biomass_yield_gram=1.4, biomass_molar_weight=yeast.biomass_molar_weight) # yield by gram\nysol_glu.solve_biomass_equation(biomass_yield_mol=0.4)  # molar yield\nyeast_hexane_sol = ysol_hex.biomass_equation_solution\nyeast_glucose_sol = ysol_glu.biomass_equation_solution\nprint('Respiratory quotient with glucose substrate: ',yeast_glucose_sol['rq'])\nprint('Respiratory quotient with hexane substrate: ',yeast_hexane_sol['rq'])</code></pre>",
 
             "<pre><code>Out:\nRespiratory quotient with glucose substrate: 1.01\nRespiratory quotient under hexane substrate: 0.187</code></pre>",
             "Respiratory growth of yeast in glucose substrate is close to 1. Respiratory growth of yeast in hexane substrate is much less than 1. This is because glucose needs less dioxygen (O2) for respiration because it contains oxygen (C6H12O6). Respiratory quotient is defined as the ratio between moles of carbon dioxide produced per mole of dioxygen (O2). Since hexane (C6H14) lacks oxygen (O), yeast requires more dioxygen (O2) for respiration when using hexane as substrate, hence respiratory quotient is lower in that case.",
 
-            "<br>2. <a href='#tut2' id='tut2'>Calculate respiratory quotient from gaseous inlet-outlet exchange values</a>",
+            "<br>2. <a href='#tut2' id='tut2'>Respiratory quotient from gaseous inlet-outlet exchange values</a>",
             "<pre><code>from bioreactor_model import calc\nexpt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)\nbiomass = expt.biomass_composition\nbe = calc.BiomassEquation(biomass)\nbe.set_gas_io_values(inlet_N2=79,inlet_O2=21,outlet_CO2=10,outlet_N2=83,outlet_O2=7)\nprint(be.rq_from_gas_io())</code></pre>",
 
             "<pre><code>Out:\n0.664</code></pre>",
-            "<br>3. <a href='#tut3' id='tut3'>Compute biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a>",
+            "<br>3. <a href='#tut3' id='tut3'>Biomass molecular composition and biomass molecular weight with dry weights and ash fraction</a>",
             
             "<pre><code>from bioreactor_model import calc\nexpt = calc.CellComposition(values={'C':47,'H':4.15,'N':10,'O':31,'ash_fraction':7.85}, dry_weights=True)\nprint(expt.biomass_molar_weight)\nprint(expt.biomass_composition['formula'])</code></pre>",
-            "<pre><code>Out:\n25.545\nC(H-1.052)(N-0.182)(O-0.495)</code></pre>"
+            "<pre><code>Out:\n25.545\nC(H-1.052)(N-0.182)(O-0.495)</code></pre>",
+
+            "<br>4. <a href='#tut4' id='tut4'>Time to achieve given titer under exponential biomass growth (doubling)</a>",
+            "Given a batch bioprocess for recombinant protein production with specific production rate (q<sub>p</sub>)=4x10<sup>-6</sup> g product / 10<sup>6</sup> cells . h, reactor seeded with 5x10<sup>5</sup> cells/ml, and cells doubling every 15 hours, time to achieve product titer of 5 g/l (under balanced growth conditions) is:",
+            "<pre><code>from bioreactor-model import bioreactor\nprint(bioreactor.time_to_titer(titer=5,qp=0.000000000004,cell_seed_volume=500000,doubling_time=15,seed_unit='cell/ml')['value'])</pre><code>",
+            "<pre><code>Out:\n103</pre></code>",
+            "It takes 103 hours to achieve product titer of 5g per liter under balanced growth conditions given above."
 
         ]
     },
     {
         "title": "API Reference",
         "body": [
-            "<ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#cellcomposition'>class CellComposition()</a></li><ul style='list-style-type: none;'><li><a href='#ccbiomasscomp'>CellComposition().biomass_composition</a></li><li><a href='#ccbiomassmw'>CellComposition().biomass_molar_weight</a></li></ul></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#biomassequation'>class BiomassEquation()</a></li><ul style='list-style-type: none;'><li><a href='#besetgasio'>BiomassEquation().set_gas_io_values()</a></li><li><a href='#besolvebe'>BiomassEquation().solve_biomass_equation()</a></li><li><a href='#bebes'>BiomassEquation().biomass_equation_solution</a></li><li><a href='#besub'>BiomassEquation().substrate</a></li></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#constants'>class Constants()</a></li><ul style='list-style-type: none;'><li><a href='#constantsaw'>Constants().atomic_weights[key]</a></li><li><a href='#constantssub'>Constants().substrates[key]</a></li><li><a href='#constantgmw'>Constants().get_molar_weight(compound)</a></li></ul></ul>",
+            "<ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#cellcomposition'>class CellComposition()</a></li><ul style='list-style-type: none;'><li><a href='#ccbiomasscomp'>CellComposition().biomass_composition</a></li><li><a href='#ccbiomassmw'>CellComposition().biomass_molar_weight</a></li></ul></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#biomassequation'>class BiomassEquation()</a></li><ul style='list-style-type: none;'><li><a href='#besetgasio'>BiomassEquation().set_gas_io_values()</a></li><li><a href='#besolvebe'>BiomassEquation().solve_biomass_equation()</a></li><li><a href='#bebes'>BiomassEquation().biomass_equation_solution</a></li><li><a href='#besub'>BiomassEquation().substrate</a></li></ul><ul style='list-style-type: none; margin: 0; padding: 0;'><li><a href='#constants'>class Constants()</a></li><ul style='list-style-type: none;'><li><a href='#constantsaw'>Constants().atomic_weights[key]</a></li><li><a href='#constantssub'>Constants().substrates[key]</a></li><li><a href='#constantgmw'>Constants().get_molar_weight(compound)</a></li></ul><li><a href='#bioreactor'>module bioreactor</a></li><ul style='list-style-type: none;'><li><a href='#growthdt'>bioreactor.specific_growth_rate_from_doubling_time()</a></li><li><a href='#timetotiter'>bioreactor.time_to_titer()</a></li></ul></ul>",
 
             "<a href='#cellcomposition' id='cellcomposition'>class CellComposition()</a>",
             "<pre><code>calc.CellComposition(values=values, dry_weights=False, molecular_formula=False)</code></pre>",
@@ -114,7 +120,7 @@
             "1. Respiratory quotient with <a href='#besolvebe' id='besolvebe'>BiomassEquation().solve_biomass_equation()</a>:<br>Provide gaseous inlet-outlet values before running solve_biomass_equation(). Respiratory quotient (RQ) is calculated and (RQ=d/b) is used as the 5th equation to solve linear system of biomass equation. Example:",
             "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.set_gas_io_values(79,21,10,83,7)\nbe.solve_biomass_equation()\nsolution = be.biomass_equation_solution</pre></code>",
             "2. Use biomass yield (gram):<br>solve_biomass_equation() is provided 2 inputs:<ol><li>biomass_yield_gram: This is gram biomass / gram substrate yield (by mass). This value is experimentally obtained and provided as input.</li><li>biomass_molar_weight: Use <a href='#ccbiomassmw'>CellComposition().biomass_molar_weight</a>.</li></ol>",
-            "Biomass molar weight and biomass yield by gram are used to calculate molar yield (MY) of biomass per mole of substrate. (MY=c) is used as the 5th equation to solve linear system of biomass equation. Example:",
+            "Biomass molar weight and biomass yield by gram are used to calculate molar yield (MY) of biomass per mole of substrate. (MY=c) is used as the 5th equation to solve linear system of biomass equation. Example:",                                                                                                                         
             "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.solve_biomass_equation(biomass_yield_gram=1.4, biomass_molar_weight=biomass_molar_weight)\nsolution = be.biomass_equation_solution</pre></code>",
             "3. Use biomass molar yield:<br>solve_biomass_equation() is provided biomass molar yield (biomass_yield_mol) as input. This is molar yield (MY) of biomass per mole of substrate. (MY=c) is used as the 5th equation to solve linear system of biomass equation. Example:",
             "<pre><code>be = calc.BiomassEquation(biomass_composition)\nbe.solve_biomass_equation(biomass_yield_mol=0.4)\nsolution = be.biomass_equation_solution</pre></code>",
@@ -147,7 +153,29 @@
             "<a href='#constantgmw' id='constantgmw'>Constants().get_molar_weight(compound)</a>",
             "Returns molecular weight of compound. Compound is dictionary with keys for carbon, hydrogen, nitrogen and oxygen subscript values in molecular formula. Compound is equivalent to CellComposition().biomass_composition. <a href='#ccbiomasscomp'>CellComposition().biomass_composition</a> and BiomassEquation().substrate can be used as input to Constants().get_molar_weight(compound).",
             "<pre><code>print(Constants().get_molar_weight({'C':6,'H':14,'N:0,'O':0}))</code></pre>",
-            "<pre><code>Out:\n86.176</code></pre>"
+            "<pre><code>Out:\n86.176</code></pre>",
+
+            "<a href='#bioreactor' id='bioreactor'>module bioreactor</a>",
+            "This module contains functions for bioreactor calculations like growth rate, time to achieve titer and batch and fed-batch bioreactor modeling.",
+            
+            "<a href='#growthdt' id='growthdt'>bioreactor.specific_growth_rate_from_doubling_time(doubling time)</a>",
+            "<pre><code>bioreactor.specific_growth_rate_from_doubling_time(doubling_time)</code></pre>",
+            "Returns float value of specific growth rate under exponential growth given doubling time of biomass. This function calculates specific growth rate using the formula below.",
+            "Unit: inverse doubling time unit (like h<sup>-1</sup>)",
+            "Formula: specific growth rate = log-natural(2) / doubling_time",
+            "Example",
+            "<pre><code>from bioreactor-model import bioreactor\nprint(bioreactor.specific_growth_rate_from_doubling_time(15))</pre><code>",
+            "<pre><code>Out:\n0.046209812037329684</pre></code>",
+    
+            "<a href='#timetotiter' id='timetotiter'>bioreactor.time_to_titer()</a>",
+            "<pre><code>bioreactor.time_to_titer(titer, qp, cell_seed_volume, doubling_time, growth='exponential', titer_unit='g/l', qp_unit='g/cell.hr', seed_unit='cell/l', time_unit='hr')</code></pre>",
+            "Returns dictionary with integer value and unit of time. This function calculates the time taken for a bioreactor production process with exponential biomass growth (doubling phase) to achieve the specified product titer. This function assumes doubling of biomass and requires the following inputs:",
+            "<ol><li>titer: Final titer (product per unit volume) required. This value specifies the titer required for the function time_to_titer(), which calculates the time taken to achieve it. Specify unit in titer_unit variable (see below)</li><li>qp: Specific productivity (gram product per number of cells per unit time) of product. This input is the amount of product produced per cell per unit of time. Specify unit in qp_unit variable (see below).</li><li>cell_seed_volume: Initial number of cells per unit volume. This is biomass the bioreactor production process is seeded with. These cells double in doubling_time and produce product. Specify unit in seed_unit (see below).</li><li>doubling_time: Time taken to double biomass. Biomass growth is assumed exponential, so the time taken to double biomass growth must be provided here. Specify time unit in time_unit variable (see below). Function return value will be of same unit as doubling time.</li><li>growth: Default value 'exponential'. Only exponential growth currently supported.</li><li>titer_unit: Default value 'g/l' (gram per liter). This input is string of titer input unit. Other value for this input is 'g/ml' (gram per milliliter) (currently unsupported).</li><li>qp_unit: Default value 'g/cell.hr' (gram per cells per hour). This input is string of specific productivity input unit. Other values can be g/cell.min (gram per cells per minute), g/cell.s (gram per cells per second) (currently unsupported).</li><li>seed_unit: Default value 'cell/l' (number of cells per liter). This input is string of cell_seed_volume input unit. Other value for this input is cell/ml (number of cells per milliliter) (supported).</li><li>time_unit: Default value 'hr' (hour). This input is string of doubling_time input unit. This unit is also used used for final output (time to titer) of this function. Other values for this input are 'min' (minute) and 's' (second) (unsupported).</li></ol>",
+            "Example",
+            "<pre><code>from bioreactor-model import bioreactor\nprint(bioreactor.time_to_titer(titer=5,qp=0.000000000004,cell_seed_volume=500000,doubling_time=15,seed_unit='cell/ml'))</pre><code>",
+            "<pre><code>Out:\n{'value': 103, 'unit':'hr'}</pre></code>"
+
+
         ]
     },
     {
